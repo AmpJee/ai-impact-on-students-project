@@ -22,6 +22,10 @@ def add_ordinal_features(df: pd.DataFrame) -> pd.DataFrame:
     ORDINAL_MAP = {"Beginner": 0, "Intermediate": 1, "Advanced": 2}
     df["Prompt_Skill_Ordinal"] = df["Prompt_Engineering_Skill"].map(ORDINAL_MAP)
     df = df.drop(columns=["Prompt_Engineering_Skill"])
+
+    BURNOUT_MAP = {"Low": 0, "Medium": 1, "High": 2}
+    df["Burnout_Risk_Level_Enc"] = df["Burnout_Risk_Level"].map(BURNOUT_MAP)
+    df.drop(columns=["Burnout_Risk_Level"], inplace=True)
     return df
 
 
