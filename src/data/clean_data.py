@@ -11,11 +11,34 @@ ANOMALY_FEATURES = [
     "Skill_Retention_Score",
 ]
 
+LEAKAGE_FEATURES = ["Post_Semester_GPA"]
+
+DROP_FEATURES = ["Student_ID"]
+
+
+def drop_leakage_features(
+    df: pd.DataFrame, leakage_features: list[str] = LEAKAGE_FEATURES
+) -> pd.DataFrame:
+    """Drop features that could lead to data leakage in modeling."""
+
+    df = df.copy()
+    df = df.drop(columns=leakage_features, errors="ignore")
+    return df
+
 
 def drop_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     """Drop exact duplicate Student_ID rows, if any."""
 
-    return df.drop_duplicates(subset=["Student_ID"]).reset_index(drop=True)
+    df = df.copy()
+    df = df.drop_duplicates().reset_index(drop=True)
+    return df
+
+
+def drop_columns(df: pd.DataFrame, columns: list[str] = DROP_FEATURES) -> pd.DataFrame:
+    """Drop specified columns from the DataFrame."""
+    df = df.copy()
+    df = df.drop(columns=columns, errors="ignore")
+    return df
 
 
 def validate_ranges(df: pd.DataFrame) -> pd.DataFrame:
@@ -33,7 +56,7 @@ def validate_ranges(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_anomaly_flag(
-    df: pd.DataFrame, contamination: float = 0.02, random_state: int = 42
+    df: pd.DataFrame, contamination: float = 0.02, random_state: int = 42, remove=False
 ) -> pd.DataFrame:
     """Flag unusual student profiles for monitoring or further investigation using Isolation Forest."""
 
@@ -43,13 +66,15 @@ def add_anomaly_flag(
     df = df.copy()
     df["anomaly_flag"] = iso.fit_predict(X_scaled)  # -1 = anomaly, 1 = normal
     df["anomaly_score_raw"] = iso.decision_function(X_scaled)
+
+    if remove:
+        df = df[df["anomaly_flag"] == 1].reset_index(drop=True)
     return df
 
 
 def clean(df: pd.DataFrame) -> pd.DataFrame:
-    """Clean the dataset by dropping duplicates, validating ranges, and adding anomaly flags."""
-
+    df = drop_leakage_features(df)
     df = drop_duplicates(df)
     df = validate_ranges(df)
-    df = add_anomaly_flag(df)
+    df = add_anomaly_flag(df, remove=True)
     return df
