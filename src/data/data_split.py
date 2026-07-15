@@ -16,9 +16,9 @@ def split_data_with_stratification(
     """Split the dataset into training and testing sets with stratification on the target variable."""
 
     return train_test_split(
-        df.drop(columns=["Burnout_Risk_Level"]),
-        df["Burnout_Risk_Level"],
+        df.drop(columns=["Burnout_Risk_Level_Enc"]),
+        df["Burnout_Risk_Level_Enc"],
         test_size=test_size,
         random_state=random_state,
-        stratify=df["Burnout_Risk_Level"],
+        stratify=df["Burnout_Risk_Level_Enc"]
     )
