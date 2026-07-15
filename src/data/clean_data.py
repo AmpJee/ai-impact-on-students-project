@@ -13,7 +13,7 @@ ANOMALY_FEATURES = [
 
 LEAKAGE_FEATURES = ["Post_Semester_GPA"]
 
-DROP_FEATURES = ["Student_ID"]
+DROP_FEATURES = ["Student_ID", "anomaly_score_raw", "anomaly_flag"]
 
 
 def drop_leakage_features(
@@ -77,4 +77,5 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     df = drop_duplicates(df)
     df = validate_ranges(df)
     df = add_anomaly_flag(df, remove=True)
+    df = drop_columns(df)
     return df
