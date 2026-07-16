@@ -1,4 +1,4 @@
-from src.models.metrics import classification_metrics
+from src.services.metrics import classification_metrics
 
 
 def test_classification_metrics_returns_expected_keys():
