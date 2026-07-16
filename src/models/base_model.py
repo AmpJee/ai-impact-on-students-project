@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
-from .metrics import classification_metrics
+from ..services.metrics import classification_metrics
 
 
 class BaseModel(ABC):
