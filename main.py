@@ -1,24 +1,27 @@
-from src.data import load_data, clean, split_data, preprocess_data
+from src.data import load_data, preprocess_data, split_data_with_stratification
 from src.features import engineer_features
+from src.models import XGBoostBurnoutModel
+
+BURNOUT_ORDER = ["Low", "Medium", "High"]
 
 
 def run_pipeline():
-    df_raw = load_data()
-    df = clean(df_raw)
+    df = load_data()
+    df = preprocess_data(df)
+    df = engineer_features(df)
 
-    train_df, test_df = split_data(df)
+    X_train, X_test, y_train, y_test = split_data_with_stratification(
+        df, target_column="Burnout_Risk_Level_Enc", test_size=0.2, random_state=42
+    )
 
-    train_df = preprocess_data(train_df)
-    test_df = preprocess_data(test_df)
-
-    train_df = engineer_features(train_df)
-    test_df = engineer_features(test_df)
-
-    return train_df, test_df
+    model = XGBoostBurnoutModel()
+    model.fit(X_train, y_train)
+    metrics = model.evaluate(X_test, y_test, target_names=BURNOUT_ORDER)
+    print(
+        f"XGBoost \nAccuracy: {metrics['accuracy']:.4f}, Macro F1: {metrics['macro_f1']:.4f}"
+    )
+    return model
 
 
 if __name__ == "__main__":
-    train_df, test_df = run_pipeline()
-    print(f"Training: {train_df.shape}")
-    print(train_df.head())
-    print(f"Testing: {test_df.shape}")
+    run_pipeline()
