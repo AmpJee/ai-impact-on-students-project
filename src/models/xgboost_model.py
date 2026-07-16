@@ -1,6 +1,6 @@
 from xgboost import XGBClassifier
 
-from services.load_config import get_xgboost_params
+from ..services.load_config import get_xgboost_params
 
 from .base_model import BaseModel
 
