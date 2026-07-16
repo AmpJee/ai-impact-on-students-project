@@ -13,5 +13,29 @@
     "colsample_bytree": 0.6003744287092915,
     "reg_alpha": 0.19136141848829258,
     "reg_lambda": 4.1037113192886325
+  },
+  "lightgbm": {
+    "objective": "multiclass",
+    "num_class": 3,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "n_jobs": -1,
+    "verbose": -1,
+    "n_estimators": 568,
+    "learning_rate": 0.012595671143611863,
+    "num_leaves": 84,
+    "min_child_samples": 22,
+    "subsample": 0.9218542362585128,
+    "colsample_bytree": 0.6195855297210976
+  },
+  "catboost": {
+    "loss_function": "MultiClass",
+    "auto_class_weights": "Balanced",
+    "random_state": 42,
+    "verbose": 0,
+    "iterations": 762,
+    "learning_rate": 0.028080429751454198,
+    "depth": 10,
+    "l2_leaf_reg": 3.0133326241218543
   }
 }
