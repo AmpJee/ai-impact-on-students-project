@@ -18,5 +18,7 @@ def test_classification_metrics_perfect_prediction():
 
 
 def test_classification_metrics_uses_target_names():
-    m = classification_metrics([0, 1, 2], [0, 1, 2], target_names=["Low", "Medium", "High"])
+    m = classification_metrics(
+        [0, 1, 2], [0, 1, 2], target_names=["Low", "Medium", "High"]
+    )
     assert "Low" in m["report"]

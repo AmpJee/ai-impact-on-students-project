@@ -14,7 +14,9 @@ def test_stratified_split_excludes_target_from_features(engineered_df):
 
 
 def test_stratified_split_sizes_are_consistent(engineered_df):
-    X_train, X_test, y_train, y_test = split_data_with_stratification(engineered_df, test_size=0.2)
+    X_train, X_test, y_train, y_test = split_data_with_stratification(
+        engineered_df, test_size=0.2
+    )
     assert len(X_train) + len(X_test) == len(engineered_df)
     assert len(y_train) == len(X_train)
     assert len(y_test) == len(X_test)
