@@ -8,8 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+catboost_info
 
 /data/
+artifacts/
 
 # MacOS specific files
 .DS_Store

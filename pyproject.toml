@@ -3,11 +3,25 @@ name = "ai-impact-on-students-project"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.11"
+dependencies = [
+    "catboost>=1.2.10",
+    "lightgbm>=4.6.0",
+    "matplotlib>=3.11.0",
+    "numpy>=2.3.5",
+    "optuna>=4.9.0",
+    "pandas>=3.0.3",
+    "seaborn>=0.13.2",
+    "shap>=0.51.0",
+    "xgboost>=3.2.0",
+]
 
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
     "ruff>=0.15.21",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
