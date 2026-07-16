@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 NOMINAL_FEATURES = [
     "Major_Category",
@@ -29,6 +30,14 @@ def add_ordinal_features(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def add_interactions(df):
+    df = df.copy()
+    df["GenAI_x_Dependency"] = df["Weekly_GenAI_Hours"] * df["Perceived_AI_Dependency"]
+    df["GenAI_x_Anxiety"] = df["Weekly_GenAI_Hours"] * df["Anxiety_Level_During_Exams"]
+    df["log_GenAI_Hours"] = np.log1p(df["Weekly_GenAI_Hours"])
+    return df
+
+
 def one_hot_encode(
     df: pd.DataFrame, columns: list[str] = NOMINAL_FEATURES
 ) -> pd.DataFrame:
@@ -40,5 +49,6 @@ def one_hot_encode(
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     df = add_ratio_features(df)
     df = add_ordinal_features(df)
+    df = add_interactions(df)
     df = one_hot_encode(df)
     return df
