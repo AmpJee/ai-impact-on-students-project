@@ -1,11 +1,14 @@
 from src.data import load_data, preprocess_data, split_data_with_stratification
 from src.features import engineer_features
-from src.models import XGBoostBurnoutModel
+from src.services.model_service import get_model
 
 BURNOUT_ORDER = ["Low", "Medium", "High"]
 
+# Change the model here: "xgboost", "lightgbm", or "catboost".
+MODEL_NAME = "xgboost"
 
-def run_pipeline():
+
+def run_pipeline(model_name: str = MODEL_NAME):
     df = load_data()
     df = preprocess_data(df)
     df = engineer_features(df)
@@ -14,11 +17,12 @@ def run_pipeline():
         df, target_column="Burnout_Risk_Level_Enc", test_size=0.2, random_state=42
     )
 
-    model = XGBoostBurnoutModel()
+    model = get_model(model_name)
     model.fit(X_train, y_train)
     metrics = model.evaluate(X_test, y_test, target_names=BURNOUT_ORDER)
     print(
-        f"XGBoost \nAccuracy: {metrics['accuracy']:.4f}, Macro F1: {metrics['macro_f1']:.4f}"
+        f"{model_name}\n"
+        f"Accuracy: {metrics['accuracy']:.4f}, Macro F1: {metrics['macro_f1']:.4f}"
     )
     return model
 
