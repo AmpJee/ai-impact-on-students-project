@@ -1,5 +1,5 @@
 from src.data import load_data, preprocess_data, split_data_with_stratification
-from src.features import engineer_features
+from src.features import engineer_features, select_features
 from src.services.model_service import get_model
 from src.services.shap_service import plot_shap_summary
 
@@ -14,9 +14,10 @@ def run_pipeline(model_name: str = MODEL_NAME, interpret: bool = True):
     df = preprocess_data(df)
     df = engineer_features(df)
 
-    X_train, X_test, y_train, y_test = split_data_with_stratification(
-        df, target_column="Burnout_Risk_Level_Enc", test_size=0.2, random_state=42
-    )
+    X_train, X_test, y_train, y_test = split_data_with_stratification(df)
+
+    cols = select_features(X_train, y_train, k=26)
+    X_train, X_test = X_train[cols], X_test[cols]
 
     model = get_model(model_name)
     model.fit(X_train, y_train)

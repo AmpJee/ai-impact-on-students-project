@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
 
 NOMINAL_FEATURES = [
     "Major_Category",
@@ -44,6 +45,15 @@ def one_hot_encode(
     df = df.copy()
     df = pd.get_dummies(df, columns=columns, drop_first=True, dtype=int)
     return df
+
+
+def select_features(X: pd.DataFrame, y, k: int = 15) -> list[str]:
+    """Filter feature selection: keep the k features with the highest mutual
+    information with the target. Fit on training data only, then apply the
+    returned columns to both train and test.
+    """
+    selector = SelectKBest(score_func=mutual_info_classif, k=k).fit(X, y)
+    return list(X.columns[selector.get_support()])
 
 
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:

@@ -3,6 +3,7 @@ from src.features.features_engineer import (
     add_ordinal_features,
     add_ratio_features,
     one_hot_encode,
+    select_features,
 )
 
 
@@ -35,3 +36,11 @@ def test_one_hot_encode_expands_nominal_features(clean_df):
 def test_engineer_features_produces_numeric_frame(engineered_df):
     assert "Burnout_Risk_Level_Enc" in engineered_df.columns
     assert engineered_df.select_dtypes(include="object").empty
+
+
+def test_select_features_returns_k_columns(engineered_df):
+    X = engineered_df.drop(columns=["Burnout_Risk_Level_Enc"])
+    y = engineered_df["Burnout_Risk_Level_Enc"]
+    cols = select_features(X, y, k=5)
+    assert len(cols) == 5
+    assert set(cols) <= set(X.columns)
