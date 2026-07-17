@@ -16,7 +16,7 @@ def run_pipeline(model_name: str = MODEL_NAME, interpret: bool = True):
 
     X_train, X_test, y_train, y_test = split_data_with_stratification(df)
 
-    cols = select_features(X_train, y_train, k=15) 
+    cols = select_features(X_train, y_train, k=26)
     X_train, X_test = X_train[cols], X_test[cols]
 
     model = get_model(model_name)
