@@ -7,11 +7,12 @@ wheels/
 *.egg-info
 
 # Virtual environments
-.venv
-catboost_info
+.venv/
 
-/data/
-artifacts/
-
-# MacOS specific files
-.DS_Store
+# Other
+.git
+.gitignore
+.github/
+README.md
+.pytest_cache/
+.ruff_cache/
